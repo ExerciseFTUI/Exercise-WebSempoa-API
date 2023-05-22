@@ -9,6 +9,7 @@ import AdminRoute from "./routes/adminRoute.js";
 import CabangRoute from "./routes/cabangRoute.js";
 import guruRoute from "./routes/guruRoute.js";
 import muridRoute from "./routes/muridRoute.js";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +20,7 @@ connectToDB();
 //Middleware
 app.use(cookieParser());
 app.use(express.json());
+app.use(cors());
 
 //Routes
 app.use("/sample", sampleRoute);
