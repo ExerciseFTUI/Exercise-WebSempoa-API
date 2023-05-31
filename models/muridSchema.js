@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Invoice from "./invoiceSchema.js";
 
 const muridSchema = new mongoose.Schema({
   id: {
@@ -11,7 +12,7 @@ const muridSchema = new mongoose.Schema({
   nama: { type: String, required: true },
   jenis_kelamin: { type: String, required: true },
   level_sekarang: { type: String, required: true },
-  pembayaran: { type: Date, default: Date.now },
+  pembayaran: Invoice,
   status: { type: String, required: true },
   profile: { type: String, required: true },
 });
