@@ -12,9 +12,10 @@ const muridSchema = new mongoose.Schema({
   nama: { type: String, required: true },
   jenis_kelamin: { type: String, required: true },
   level_sekarang: { type: String, required: true },
-  pembayaran: Invoice,
+  pembayaran: [Invoice],
   status: { type: String, required: true },
   profile: { type: String, required: true },
+  cabang: { type: mongoose.Schema.Types.ObjectId, ref: "Cabang" },
 });
 
 const Murid = mongoose.model("Murid", muridSchema);

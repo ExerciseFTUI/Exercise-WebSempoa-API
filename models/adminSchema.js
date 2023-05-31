@@ -14,6 +14,7 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  cabang: { type: mongoose.Schema.Types.ObjectId, ref: "Cabang" },
 });
 
 const Admin = mongoose.model("Admin", adminSchema);
