@@ -88,7 +88,9 @@ export const Login = async (req, res) => {
     });
 
     //Response
-    res.status(200).json({ data: admin });
+    res.status(200).json({
+      data: { userId: admin._id, role: admin.role, username: admin.username },
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -110,4 +112,22 @@ export const generateAccessToken = (admin) => {
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "24h" }
   );
+};
+
+export const CheckToken = (req, res, next) => {
+  const token = req.cookies.authorization;
+
+  if (!token) return res.status(401).json({ message: "Token Missing" });
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    //Jika Error
+    if (err) return res.status(403).json({ message: err.message });
+
+    //JIka Berhasil Melewati Proses Verification
+    req.username = decoded.username;
+    req.role = decoded.role;
+    req.id = decoded.id;
+
+    res.status(200).json({ message: "Success", token: token });
+  });
 };

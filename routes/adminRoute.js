@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  CheckToken,
   Login,
   Logout,
   Register,
@@ -11,6 +12,7 @@ const router = express.Router();
 
 router.post("/login", Login);
 router.post("/register", Register);
+router.get("/token", CheckToken);
 router.get(
   "/getAllAdmin",
   verifyToken,

@@ -1,13 +1,16 @@
 import express from "express";
-import { apiFilterMuridByNama, 
-        // apiFilterMuridByCabang, 
-        // apiFilterMuridByTanggal, 
-        apiFilterMuridByRangeTanggal,
-        apiGetAllMurid,
-        apiGetMuridById,
-        apiCreateMurid,
-        apiUpdateMurid,
-        apiDeleteMurid } from "../controllers/muridController.js";
+import {
+  apiFilterMuridByNama,
+  // apiFilterMuridByCabang,
+  // apiFilterMuridByTanggal,
+  apiFilterMuridByRangeTanggal,
+  apiGetAllMurid,
+  apiGetMuridById,
+  apiCreateMurid,
+  apiUpdateMurid,
+  apiDeleteMurid,
+} from "../controllers/muridController.js";
+import { verifyToken } from "../middlewares/auth.js";
 
 const router = express.Router();
 
