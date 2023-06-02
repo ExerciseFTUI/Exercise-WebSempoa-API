@@ -86,6 +86,9 @@ export const Login = async (req, res) => {
       httpOnly: true,
       maxAge: 24 * 1000 * 60 * 60, //24 jam = 60 * 60 * 24 * 1 * 1000
       secure: true,
+      sameSite: "none",
+      secure: true,
+      domain: "http://localhost:5173/",
     });
 
     //Response
