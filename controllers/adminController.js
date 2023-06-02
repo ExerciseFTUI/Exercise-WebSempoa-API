@@ -85,6 +85,7 @@ export const Login = async (req, res) => {
     res.cookie("authorization", accessToken, {
       httpOnly: true,
       maxAge: 24 * 1000 * 60 * 60, //24 jam = 60 * 60 * 24 * 1 * 1000
+      secure: true,
     });
 
     //Response
