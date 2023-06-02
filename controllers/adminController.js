@@ -114,7 +114,7 @@ export const generateAccessToken = (admin) => {
   );
 };
 
-export const CheckToken = (req, res, next) => {
+export const CheckToken = (req, res) => {
   const token = req.cookies.authorization;
 
   if (!token) return res.status(401).json({ message: "Token Missing" });
@@ -123,11 +123,13 @@ export const CheckToken = (req, res, next) => {
     //Jika Error
     if (err) return res.status(403).json({ message: err.message });
 
-    //JIka Berhasil Melewati Proses Verification
-    req.username = decoded.username;
-    req.role = decoded.role;
-    req.id = decoded.id;
+    const user = {};
 
-    res.status(200).json({ message: "Success", token: token });
+    //JIka Berhasil Melewati Proses Verification
+    user.username = decoded.username;
+    user.role = decoded.role;
+    user.id = decoded.id;
+
+    res.status(200).json({ message: "Success", token: token, user: user });
   });
 };
