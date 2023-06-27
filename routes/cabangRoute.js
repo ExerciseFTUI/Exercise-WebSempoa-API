@@ -4,7 +4,8 @@ import { verifyRole, verifyToken } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.get("/getAllCabang", verifyToken, verifyRole("IBO"), getAllCabang);
+// router.get("/getAllCabang", verifyToken, verifyRole("IBO"), getAllCabang);
+router.get("/getAllCabang", getAllCabang);
 router.post("/createCabang", createCabang);
 
 const CabangRoute = router;
