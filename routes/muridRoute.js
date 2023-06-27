@@ -18,7 +18,7 @@ router.get("/filter-by-nama", apiFilterMuridByNama);
 // router.get("/filter-by-cabang", apiFilterMuridByCabang);
 // router.get("/filter-by-tanggal", apiFilterMuridByTanggal);
 router.get("/filter-by-range-tanggal", apiFilterMuridByRangeTanggal);
-router.get("", verifyToken, apiGetAllMurid);
+router.get("", apiGetAllMurid);
 router.get("/:id", apiGetMuridById);
 router.post("/create", apiCreateMurid);
 router.put("/:id", apiUpdateMurid);
