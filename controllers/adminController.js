@@ -96,7 +96,9 @@ export const Login = async (req, res) => {
 
     //Response
     res.status(200).json({
-      data: { userId: admin._id, role: admin.role, username: admin.username },
+      userId: admin._id,
+      role: admin.role,
+      username: admin.username,
     });
   } catch (error) {
     res.status(404).json({ message: error.message });
