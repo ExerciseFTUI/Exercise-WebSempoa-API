@@ -9,6 +9,7 @@ import {
   apiCreateMurid,
   apiUpdateMurid,
   apiDeleteMurid,
+  // apiChangeMuridCabang,
 } from "../controllers/muridController.js";
 import { verifyToken } from "../middlewares/auth.js";
 
@@ -18,11 +19,12 @@ router.get("/filter-by-nama", apiFilterMuridByNama);
 // router.get("/filter-by-cabang", apiFilterMuridByCabang);
 // router.get("/filter-by-tanggal", apiFilterMuridByTanggal);
 router.get("/filter-by-range-tanggal", apiFilterMuridByRangeTanggal);
-router.get("", verifyToken, apiGetAllMurid);
+router.get("", apiGetAllMurid);
 router.get("/:id", apiGetMuridById);
 router.post("/create", apiCreateMurid);
 router.put("/:id", apiUpdateMurid);
 router.delete("/:id", apiDeleteMurid);
+// router.post("/cabang", apiChangeMuridCabang);
 
 const muridRoute = router;
 export default muridRoute;
