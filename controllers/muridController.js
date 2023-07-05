@@ -7,7 +7,7 @@ export const apiGetAllMurid = async (req, res) => {
     if (cabang){
       murid = await Murid.find({cabang: req.query.cabang});
     }else{
-      murid = "No cabang found"
+      murid = await Murid.find();
     }
     res.status(200).json(murid);
   } catch (err) {
