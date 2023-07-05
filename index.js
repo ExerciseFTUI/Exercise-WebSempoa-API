@@ -20,7 +20,16 @@ connectToDB();
 //Middleware
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: [
+      "http://localhost:5000",
+      "https://nice-teal-peacock-fez.cyclic.app",
+      "http://localhost:5173",
+    ],
+  })
+);
 
 //Routes
 app.use("/sample", sampleRoute);
