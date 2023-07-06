@@ -97,8 +97,6 @@ export const Login = async (req, res) => {
       maxAge: 24 * 1000 * 60 * 60, //24 jam = 60 * 60 * 24 * 1 * 1000
     });
 
-    console.log(admin);
-
     //Response
     res.status(200).json({
       userId: admin._id,
