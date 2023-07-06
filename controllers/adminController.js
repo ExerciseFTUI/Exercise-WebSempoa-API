@@ -57,7 +57,9 @@ export const Login = async (req, res) => {
     const { username, password } = req.body;
 
     //Find Admin with the username
-    const admin = await Admin.findOne({ username: username });
+    const admin = await Admin.findOne({ username: username }).populate(
+      "cabang"
+    );
 
     //If Admin is not found
     if (!admin) {
@@ -94,6 +96,8 @@ export const Login = async (req, res) => {
       httpOnly: true,
       maxAge: 24 * 1000 * 60 * 60, //24 jam = 60 * 60 * 24 * 1 * 1000
     });
+
+    console.log(admin);
 
     //Response
     res.status(200).json({
