@@ -101,6 +101,7 @@ export const Login = async (req, res) => {
       role: admin.role,
       username: admin.username,
       cabangId: admin.cabang?._id,
+      cabangName: admin.cabang?.namaCabang,
     });
   } catch (error) {
     res.status(404).json({ message: error.message });

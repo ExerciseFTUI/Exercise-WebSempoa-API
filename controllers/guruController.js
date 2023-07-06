@@ -32,7 +32,6 @@ export const addGuru = async (req, res) => {
       cabangId,
     } = req.body;
 
-    console.log(req.body);
     //Create a new guru and add it to the database
     const guru = new Guru({
       namaGuru,

@@ -27,6 +27,7 @@ app.use(
       "http://localhost:5000",
       "https://nice-teal-peacock-fez.cyclic.app",
       "http://localhost:5173",
+      "https://exercise-web-sempoa.vercel.app",
     ],
   })
 );
