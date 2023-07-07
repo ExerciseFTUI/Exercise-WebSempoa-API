@@ -44,6 +44,23 @@ export const getKuponById = async (req, res) => {
   }
 };
 
+// Route untuk mendapatkan kupon berdasarkan i
+export const getKuponByCabang = async (req, res) => {
+  const cabangId = req.params.cabangId;
+
+  try {
+    const kupon = await Kupon.find({ cabang: cabangId }).populate("cabang");
+
+    if (!kupon) {
+      return res.status(404).json({ error: "Kupon not found" });
+    }
+
+    res.status(200).json(kupon);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Route untuk mengupdate kupon berdasarkan id
 export const updateKupon = async (req, res) => {
   try {

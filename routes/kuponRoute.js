@@ -1,9 +1,13 @@
 import express from "express";
-import { addKupon, getAllKupon } from "../controllers/KuponController.js";
+import {
+  addKupon,
+  getAllKupon,
+  getKuponByCabang,
+} from "../controllers/KuponController.js";
 const router = express.Router();
 
-// router.get("/getAllCabang", verifyToken, verifyRole("IBO"), getAllCabang);
 router.get("/", getAllKupon);
+router.get("/getKuponByCabang/:cabangId", getKuponByCabang);
 router.post("/addKupon", addKupon);
 
 const KuponRoute = router;
