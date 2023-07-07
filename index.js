@@ -10,7 +10,7 @@ import CabangRoute from "./routes/cabangRoute.js";
 import guruRoute from "./routes/guruRoute.js";
 import muridRoute from "./routes/muridRoute.js";
 import cors from "cors";
-import KuponRoute from "./routes/kuponRoute.js";
+// import KuponRoute from "./routes/kuponRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -39,7 +39,7 @@ app.use("/auth", AdminRoute);
 app.use("/cabang", CabangRoute);
 app.use("/guru", guruRoute);
 app.use("/murid", muridRoute);
-app.use("/kupon", KuponRoute);
+// app.use("/kupon", KuponRoute);
 
 app.listen(PORT, () => {
   console.log("Server Running on port " + PORT);
