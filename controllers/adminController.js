@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 export const getAllAdmin = async (req, res) => {
   try {
     //Find All Admin
-    const admins = await Admin.find();
+    const admins = await Admin.find().populate("cabang");
 
     //Response
     res.status(200).json({ data: admins });
@@ -17,7 +17,7 @@ export const getAllAdmin = async (req, res) => {
 export const Register = async (req, res) => {
   try {
     //Take data from request body
-    const { username, password, role } = req.body;
+    const { username, password, role, cabangId } = req.body;
 
     //Error Handling
     if (
@@ -38,6 +38,7 @@ export const Register = async (req, res) => {
       username: username,
       password: hashedPassword,
       role: role.toUpperCase(),
+      cabang: cabangId,
     });
     const newAdmin = await admin.save();
 
@@ -56,7 +57,9 @@ export const Login = async (req, res) => {
     const { username, password } = req.body;
 
     //Find Admin with the username
-    const admin = await Admin.findOne({ username: username });
+    const admin = await Admin.findOne({ username: username }).populate(
+      "cabang"
+    );
 
     //If Admin is not found
     if (!admin) {
@@ -73,7 +76,7 @@ export const Login = async (req, res) => {
       return;
     }
 
-    //Generate Token
+    //Generate Tokenk
     const accessToken = generateAccessToken(admin);
     // const refreshToken = generateRefreshToken(admin);
 
@@ -99,6 +102,8 @@ export const Login = async (req, res) => {
       userId: admin._id,
       role: admin.role,
       username: admin.username,
+      cabangId: admin.cabang?._id,
+      cabangName: admin.cabang?.namaCabang,
     });
   } catch (error) {
     res.status(404).json({ message: error.message });

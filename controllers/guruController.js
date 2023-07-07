@@ -6,10 +6,10 @@ const toId = mongoose.Types.ObjectId;
 export const getAllGuru = async (req, res) => {
   try {
     //Find All Sample
-    const guru = await Guru.find();
+    const guru = await Guru.find().populate("cabang");
 
     //Response
-    res.status(200).json({ data: guru });
+    res.status(200).json(guru);
   } catch (error) {
     //Status error menyesuaikan
     //Untuk send error masih blm fix selalu gini
@@ -29,9 +29,9 @@ export const addGuru = async (req, res) => {
       notelp,
       pendidikanTerakhir,
       emailGuru,
+      cabangId,
     } = req.body;
 
-    console.log(req.body);
     //Create a new guru and add it to the database
     const guru = new Guru({
       namaGuru,
@@ -42,12 +42,11 @@ export const addGuru = async (req, res) => {
       notelp,
       pendidikanTerakhir,
       emailGuru,
+      cabang: cabangId,
     });
     const newGuru = await guru.save();
     //response
-    res
-      .status(200)
-      .json({ data: newGuru, messsage: "Sukses Menambahkan Guru Baru" });
+    res.status(200).json(newGuru);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -60,6 +59,19 @@ export const getGuruById = async (req, res) => {
 
     //Response
     res.status(200).json({ data: guru });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getGuruByCabang = async (req, res) => {
+  try {
+    const cabangId = req.params.cabangId;
+    //Find Guru by CabangId
+    const guru = await Guru.find({ cabang: cabangId });
+
+    //Response
+    res.status(200).json(guru);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

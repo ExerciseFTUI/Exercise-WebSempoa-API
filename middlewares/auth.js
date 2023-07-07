@@ -20,7 +20,6 @@ export const verifyToken = (req, res, next) => {
 //Verify the role
 export const verifyRole = (roles) => {
   return function (req, res, next) {
-    console.log(req.role);
     const userRole = req.role.toUpperCase();
     //Check the role
     if (roles.includes(userRole)) {

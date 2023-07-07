@@ -9,6 +9,7 @@ import {
   apiCreateMurid,
   apiUpdateMurid,
   apiDeleteMurid,
+  // apiChangeMuridCabang,
 } from "../controllers/muridController.js";
 import { verifyToken } from "../middlewares/auth.js";
 
@@ -23,6 +24,7 @@ router.get("/:id", apiGetMuridById);
 router.post("/create", apiCreateMurid);
 router.put("/:id", apiUpdateMurid);
 router.delete("/:id", apiDeleteMurid);
+// router.post("/cabang", apiChangeMuridCabang);
 
 const muridRoute = router;
 export default muridRoute;
