@@ -170,17 +170,24 @@ export const apiFilterMuridByRangeTanggal = async (req, res) => {
 
 export const apiCreateNewInvoice = async (req, res) => {
   try {
-    const invoice = req.body.invoice
-    const murid = await Murid.findOneAndUpdate(
+    const invoice = req.body.invoice;
+    const murid = await Murid.findOne({ id: req.params.id });
+    
+    const isBulanExists = murid.pembayaran.some(item => item.bulan === invoice.bulan);
+    if (isBulanExists) {
+      return res.status(400).json({ error: 'Invoice with the same date already exists' });
+    }
+    
+    const updatedMurid = await Murid.findOneAndUpdate(
       { id: req.params.id },
       {
         $push: { pembayaran: invoice },
       },
       { new: true }
     );
-    res.status(200).json(murid);
+    res.status(200).json(updatedMurid);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(400).json(err);
   }
 };
@@ -242,6 +249,31 @@ export const apiFilterMuridByMonthYear = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+export const apiFilterMuridInvoice = async (req, res) => {
+  try {
+    const cabangInput = req.query.cabang;
+    const userId = parseInt(req.query.id);
+
+    if (!cabangInput || cabangInput === undefined || cabangInput === null || cabangInput === '') {
+      return res.status(400).json({ error: 'Invalid or no cabang' });
+    }
+
+    const cabang = new mongoose.Types.ObjectId(cabangInput);
+    
+
+    if (isNaN(userId) || userId === undefined || userId === null || userId === '') {
+      return res.status(400).json({ error: 'Invalid or no userId' });
+    }
+
+    const murid = await Murid.findOne({ cabang: cabang, id: userId });
+
+    res.status(200).json(murid);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
 
 
 

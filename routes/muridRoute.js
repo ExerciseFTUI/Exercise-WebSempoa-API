@@ -12,6 +12,7 @@ import {
   // apiChangeMuridCabang,
   apiCreateNewInvoice,
   apiFilterMuridByMonthYear,
+  apiFilterMuridInvoice,
 } from "../controllers/muridController.js";
 import { verifyToken } from "../middlewares/auth.js";
 
@@ -29,6 +30,7 @@ router.delete("/:id", apiDeleteMurid);
 // router.post("/cabang", apiChangeMuridCabang);
 router.put("/invoice/:id", apiCreateNewInvoice);
 router.post("/filter-by-month-year", apiFilterMuridByMonthYear);
+router.post("/filter-by-invoice", apiFilterMuridInvoice);
 
 const muridRoute = router;
 export default muridRoute;
