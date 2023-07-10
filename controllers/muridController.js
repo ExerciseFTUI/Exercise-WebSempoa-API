@@ -6,9 +6,9 @@ export const apiGetAllMurid = async (req, res) => {
   try {
     const cabang = req.query.cabang;
     let murid;
-    if (cabang){
-      murid = await Murid.find({cabang: req.query.cabang});
-    }else{
+    if (cabang) {
+      murid = await Murid.find({ cabang: req.query.cabang });
+    } else {
       murid = await Murid.find();
     }
     res.status(200).json(murid);
@@ -167,17 +167,20 @@ export const apiFilterMuridByRangeTanggal = async (req, res) => {
 //   }
 // };
 
-
 export const apiCreateNewInvoice = async (req, res) => {
   try {
     const invoice = req.body.invoice;
     const murid = await Murid.findOne({ id: req.params.id });
-    
-    const isBulanExists = murid.pembayaran.some(item => item.bulan === invoice.bulan);
+
+    const isBulanExists = murid.pembayaran.some(
+      (item) => item.bulan === invoice.bulan
+    );
     if (isBulanExists) {
-      return res.status(400).json({ error: 'Invoice with the same date already exists' });
+      return res
+        .status(400)
+        .json({ error: "Invoice with the same date already exists" });
     }
-    
+
     const updatedMurid = await Murid.findOneAndUpdate(
       { id: req.params.id },
       {
@@ -197,13 +200,13 @@ export const apiFilterMuridByMonthYear = async (req, res) => {
     const cabang = new mongoose.Types.ObjectId(req.query.cabang);
     const year = parseInt(req.query.year);
     const month = parseInt(req.query.month);
-    
-    if (cabang === undefined || cabang === null || cabang === '') {
-      return res.status(400).json({ error: 'Invalid or no cabang' });
+
+    if (cabang === undefined || cabang === null || cabang === "") {
+      return res.status(400).json({ error: "Invalid or no cabang" });
     }
 
     if (isNaN(year) || isNaN(month) || month < 1 || month > 12) {
-      return res.status(400).json({ error: 'Invalid month or year' });
+      return res.status(400).json({ error: "Invalid month or year" });
     }
 
     const pipeline = [
@@ -232,7 +235,7 @@ export const apiFilterMuridByMonthYear = async (req, res) => {
         },
       },
     ];
-    
+
     const murid = await Murid.aggregate(pipeline);
 
     const sudah_bayar = murid.filter((m) => m.pembayaran.length > 0).length;
@@ -255,15 +258,24 @@ export const apiFilterMuridInvoice = async (req, res) => {
     const cabangInput = req.query.cabang;
     const userId = parseInt(req.query.id);
 
-    if (!cabangInput || cabangInput === undefined || cabangInput === null || cabangInput === '') {
-      return res.status(400).json({ error: 'Invalid or no cabang' });
+    if (
+      !cabangInput ||
+      cabangInput === undefined ||
+      cabangInput === null ||
+      cabangInput === ""
+    ) {
+      return res.status(400).json({ error: "Invalid or no cabang" });
     }
 
     const cabang = new mongoose.Types.ObjectId(cabangInput);
-    
 
-    if (isNaN(userId) || userId === undefined || userId === null || userId === '') {
-      return res.status(400).json({ error: 'Invalid or no userId' });
+    if (
+      isNaN(userId) ||
+      userId === undefined ||
+      userId === null ||
+      userId === ""
+    ) {
+      return res.status(400).json({ error: "Invalid or no userId" });
     }
 
     const murid = await Murid.findOne({ cabang: cabang, id: userId });
@@ -274,11 +286,61 @@ export const apiFilterMuridInvoice = async (req, res) => {
   }
 };
 
+export const apiGeneratePdf = async (req, res) => {
+  try {
+    const cabangInput = req.query.cabang;
+    const userId = parseInt(req.query.id);
+    const invoiceId = req.query.invoiceId;
 
+    console.log(cabangInput, userId, invoiceId);
 
+    if (
+      !cabangInput ||
+      cabangInput === undefined ||
+      cabangInput === null ||
+      cabangInput === ""
+    ) {
+      return res.status(400).json({ error: "Invalid or no cabang" });
+    }
 
+    const cabang = new mongoose.Types.ObjectId(cabangInput);
 
+    if (
+      isNaN(userId) ||
+      userId === undefined ||
+      userId === null ||
+      userId === ""
+    ) {
+      return res.status(400).json({ error: "Invalid or no userId" });
+    }
 
+    const murid = await Murid.findOne({ cabang: cabang, id: userId }).populate(
+      "cabang"
+    );
 
+    const invoice = murid.pembayaran.find(
+      (invoice) => invoice._id.toString() === invoiceId
+    );
 
+    if (invoice === undefined) {
+      return res.status(400).json({ error: "Invoice Not Found" });
+    }
 
+    console.log(invoice);
+
+    const invoiceData = {
+      cabang: murid.cabang.namaCabang,
+      alamat: murid.cabang.alamat,
+      nama: murid.nama,
+      idMurid: murid.id,
+      nomorInvoice: "",
+      kupon: invoice.kupon,
+      harga: invoice.harga,
+      diskon: invoice.diskon ? invoice.diskon : 0,
+    };
+
+    res.json(invoiceData);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
