@@ -1,22 +1,25 @@
-const data = {
-  cabang: "Nama Cabang",
-  alamat: "Alamat Cabang",
-  nama: "Nama Murid",
-  idMurid: "123456789",
-  nomorInvoice: "",
-  kupon: "",
-  harga: 0,
-  diskon: 0,
-};
+// const data = {
+//   cabang: "Nama Cabang",
+//   alamat: "Alamat Cabang",
+//   nama: "Nama Murid",
+//   idMurid: "123456789",
+//   nomorInvoice: "",
+//   kupon: "",
+//   harga: 0,
+//   diskon: 0,
+// };
 
 export function createInvoice(invoice, path, doc) {
-  generateHeader(doc);
+  generateHeader(doc, invoice);
+
   generateCustomerInformation(doc, invoice);
+
   generateInvoiceTable(doc, invoice);
+
   // generateFooter(doc);
 }
 
-function generateHeader(doc) {
+function generateHeader(doc, invoice) {
   const pageWidth = doc.page.width;
   const imageWidth = 150;
   const imageHeight = 100;
@@ -25,15 +28,11 @@ function generateHeader(doc) {
 
   doc
     .fillColor("#444444")
+    .fontSize(15)
+    .text(invoice.cabang, doc.page.margins.left, 90, { align: "left" })
     .fontSize(10)
-    .text("Nama Cabang.", doc.page.margins.left, 90, { align: "left" })
-    .text(
-      "Jl. Yos Sudarso No. 5 RT 02, Taba Jemekeh, Lubuklinggau - 31625 ",
-      doc.page.margins.left,
-      105,
-      { align: "left" }
-    )
-    .image("sempoa-logo.png", imageX, imageY, {
+    .text(invoice.alamat, doc.page.margins.left, 110, { align: "left" })
+    .image("./utils/sempoa-logo.png", imageX, imageY, {
       width: imageWidth,
       height: imageHeight,
     })
@@ -51,15 +50,15 @@ function generateCustomerInformation(doc, invoice) {
     .fontSize(10)
     .text("Invoice Number:", 50, customerInformationTop)
     .font("Helvetica-Bold")
-    .text(invoice.invoice_nr, 150, customerInformationTop)
+    .text(invoice.nomorInvoice, 150, customerInformationTop)
     .font("Helvetica")
     .text("Invoice Date:", 50, customerInformationTop + 15)
     .text(formatDate(new Date()), 150, customerInformationTop + 15)
 
     .font("Helvetica-Bold")
-    .text("Nama Murid", 300, customerInformationTop)
+    .text(invoice.nama, 300, customerInformationTop)
     .font("Helvetica")
-    .text("Nomor Murid", 300, customerInformationTop + 15)
+    .text(invoice.idMurid, 300, customerInformationTop + 15)
     .moveDown();
 
   generateHr(doc, 242);
@@ -76,9 +75,9 @@ function generateInvoiceTable(doc, invoice) {
   generateTableRow(
     doc,
     invoiceTableTop + 30,
-    "121212121212",
-    "Iuran Bulanan 6-2023",
-    formatCurrency(50000)
+    invoice.kupon,
+    `${invoice.tipe} ${invoice.bulan}`,
+    formatCurrency(invoice.harga)
   );
 
   generateHr(doc, invoiceTableTop + 50);
@@ -88,11 +87,12 @@ function generateInvoiceTable(doc, invoice) {
     invoiceTableTop + 60,
     "",
     "Diskon",
-    formatCurrency(10000)
+    formatCurrency(invoice.diskon)
   );
   generateHr(doc, invoiceTableTop + 80);
 
-  const totalHarga = formatCurrency(hitungTotalHarga(invoice));
+  // const totalHarga = formatCurrency(hitungTotalHarga(invoice));
+  const totalHarga = formatCurrency(invoice.harga - invoice.diskon);
 
   const subtotalPosition = invoiceTableTop + 90;
   generateTableRow(doc, subtotalPosition, "", "Subtotal", totalHarga);
@@ -122,16 +122,16 @@ function generateHr(doc, y) {
   doc.strokeColor("#aaaaaa").lineWidth(1).moveTo(50, y).lineTo(550, y).stroke();
 }
 
-function hitungTotalHarga(invoice) {
-  let totalHarga = 0;
+// function hitungTotalHarga(invoice) {
+//   let totalHarga = 0;
 
-  for (let i = 0; i < invoice.items.length; i++) {
-    const item = invoice.items[i];
-    totalHarga += item.harga;
-  }
+//   for (let i = 0; i < invoice.items.length; i++) {
+//     const item = invoice.items[i];
+//     totalHarga += item.harga;
+//   }
 
-  return totalHarga;
-}
+//   return totalHarga;
+// }
 
 function formatCurrency(angka) {
   let rupiah = "";

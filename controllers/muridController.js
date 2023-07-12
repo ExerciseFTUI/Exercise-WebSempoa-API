@@ -1,6 +1,8 @@
 import Murid from "../models/muridSchema.js";
 import Invoice from "../models/invoiceSchema.js";
 import mongoose from "mongoose";
+import { createInvoice } from "../utils/generateInvoice.js";
+import PDFDocument from "pdfkit";
 
 export const apiGetAllMurid = async (req, res) => {
   try {
@@ -190,7 +192,6 @@ export const apiCreateNewInvoice = async (req, res) => {
     );
     res.status(200).json(updatedMurid);
   } catch (err) {
-    console.log(err);
     res.status(400).json(err);
   }
 };
@@ -292,8 +293,6 @@ export const apiGeneratePdf = async (req, res) => {
     const userId = parseInt(req.query.id);
     const invoiceId = req.query.invoiceId;
 
-    console.log(cabangInput, userId, invoiceId);
-
     if (
       !cabangInput ||
       cabangInput === undefined ||
@@ -337,10 +336,23 @@ export const apiGeneratePdf = async (req, res) => {
       kupon: invoice.kupon,
       harga: invoice.harga,
       diskon: invoice.diskon ? invoice.diskon : 0,
+      tipe: invoice.tipe,
+      bulan: invoice.bulan,
     };
 
-    res.json(invoiceData);
+    //Generate PDF
+    let doc = new PDFDocument({ size: "A4", margin: 50 });
+
+    createInvoice(invoiceData, "invoice.pdf", doc);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+
+    doc.pipe(res);
+    doc.end();
+
+    // res.json(invoiceData);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: error });
   }
 };
