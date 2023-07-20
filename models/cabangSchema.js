@@ -27,8 +27,6 @@ const cabangSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // murid: [{ type: mongoose.Schema.Types.ObjectId, ref: "Murid" }],
-  // guru: [{ type: mongoose.Schema.Types.ObjectId, ref: "Guru" }],
 });
 
 const Cabang = mongoose.model("Cabang", cabangSchema);
