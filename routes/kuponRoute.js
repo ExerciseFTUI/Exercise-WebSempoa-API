@@ -5,7 +5,14 @@ import {
   getKuponByCabang,
   rekapKupon,
   useKupon,
-} from "../controllers/KuponController.js";
+} from "../controllers/voucherController.js";
+// import {
+//   addKupon,
+//   getAllKupon,
+//   getKuponByCabang,
+//   rekapKupon,
+//   useKupon,
+// } from "../controllers/KuponController.js";
 const router = express.Router();
 
 router.get("/", getAllKupon);
