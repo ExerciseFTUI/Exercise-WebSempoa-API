@@ -76,3 +76,17 @@ export const getGuruByCabang = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+export const getGuruByNama = async (req, res) => {
+  try {
+    const strFilter = req.query.nama;
+    const cabangFilter = req.query.cabang;
+    const filter = strFilter
+      ? { namaGuru: { $regex: new RegExp(strFilter, "i") }, cabang: cabangFilter }
+      : {};
+    const guru = await Guru.find(filter);
+    res.status(200).json(guru);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
