@@ -8,6 +8,7 @@ import {
   apiGetMuridById,
   apiCreateMurid,
   apiUpdateMurid,
+  apiUpdateMuridStatus,
   apiDeleteMurid,
   // apiChangeMuridCabang,
   apiCreateNewInvoice,
@@ -27,6 +28,7 @@ router.get("", apiGetAllMurid);
 router.get("/getMuridById/:id", apiGetMuridById);
 router.post("/create", apiCreateMurid);
 router.put("/:id", apiUpdateMurid);
+router.put("/change-status/:id", apiUpdateMuridStatus);
 router.delete("/:id", apiDeleteMurid);
 // router.post("/cabang", apiChangeMuridCabang);
 router.put("/invoice/:id", apiCreateNewInvoice);

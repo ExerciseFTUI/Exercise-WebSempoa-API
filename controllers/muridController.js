@@ -90,6 +90,21 @@ export const apiUpdateMurid = async (req, res) => {
   }
 };
 
+export const apiUpdateMuridStatus = async (req, res) => {
+  try {
+    const murid = await Murid.findOneAndUpdate(
+      { id: req.params.id },
+      {
+        status: req.body.status, 
+      },
+      { new: true }
+    );
+    res.status(200).json(murid);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
 export const apiDeleteMurid = async (req, res) => {
   try {
     const murid = await Murid.findOneAndDelete({ id: req.params.id });
